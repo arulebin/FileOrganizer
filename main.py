@@ -12,12 +12,24 @@ file_types={
 
 src_dir=os.getcwd()
 
+#Create Folder if don't exist
+for folder in file_types.keys():
+        folder_path = os.path.join(src_dir, folder)
+        if not os.path.exists(folder_path):
+            os.makedirs(folder_path)
+            
 for file in os.listdir(src_dir):
-    _, file_ext=os.path.splitext(file) 
-    
-    for folder,ext in file_types.items():  
-        if file_ext in ext:
-            os.mkdir(folder)
-            folder_path=os.path.join(src_dir,folder)
-            shutil.move(f"{file}",folder_path)
-            print(f"Moved {file} to {folder_path}")
+    file_path=os.path.join(src_dir,file)
+    if os.path.isfile(file_path):
+        _, file_ext=os.path.splitext(file)
+        
+        # To find the appropriate Folder
+        destination_folder='Others'
+        for folder,ext in file_types.items():
+            if file_ext in ext:
+                destination_folder=folder
+                break
+            
+        dst_path=os.path.join(src_dir,destination_folder)
+        shutil.move(f"{file}",dst_path)
+        print(f"Moved {file} to {dst_path}")
